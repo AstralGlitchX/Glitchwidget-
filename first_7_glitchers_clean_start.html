@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: transparent;
+        color: #00ffee;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 22px;
+        padding: 10px;
+        text-shadow: 0 0 6px #0ff, 0 0 12px #00ffee;
+      }
+
+      .title {
+        font-size: 26px;
+        color: #ff00cc;
+        margin-bottom: 10px;
+        animation: flicker 1.5s infinite alternate;
+      }
+
+      .glitcher {
+        margin: 5px 0;
+        animation: glitch 2s infinite;
+      }
+
+      #resetBtn {
+        margin-top: 15px;
+        padding: 5px 10px;
+        background-color: #ff00cc;
+        color: black;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        display: none; /* Only visible in browser preview */
+      }
+
+      @keyframes flicker {
+        0% {opacity: 1;}
+        50% {opacity: 0.6;}
+        100% {opacity: 1;}
+      }
+
+      @keyframes glitch {
+        0% {transform: translate(0, 0);}
+        20% {transform: translate(-1px, 1px);}
+        40% {transform: translate(1px, -1px);}
+        60% {transform: translate(-1px, -1px);}
+        80% {transform: translate(1px, 1px);}
+        100% {transform: translate(0, 0);}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">⚠️ Glitch Protocol Activated</div>
+    <div id="glitchList"></div>
+    <audio id="glitchSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d0e6c2ec95.mp3"></audio>
+    <button id="resetBtn" onclick="resetList()">RESET LIST</button>
+
+    <script>
+      const maxGlitchers = 7;
+      const glitchList = document.getElementById('glitchList');
+      const glitchSound = document.getElementById('glitchSound');
+      const resetBtn = document.getElementById('resetBtn');
+      const glitchers = [];
+
+      function addGlitcher(name) {
+        if (glitchers.length < maxGlitchers) {
+          glitchers.push(name);
+          glitchSound.play();
+          updateList();
+        }
+      }
+
+      function updateList() {
+        glitchList.innerHTML = "";
+        for (let i = 0; i < maxGlitchers; i++) {
+          const displayName = glitchers[i] ? glitchers[i] : "[Slot Open]";
+          const div = document.createElement("div");
+          div.className = "glitcher";
+          div.textContent = `${i + 1}. ${displayName}`;
+          glitchList.appendChild(div);
+        }
+      }
+
+      function resetList() {
+        glitchers.length = 0;
+        updateList();
+      }
+
+      // Show reset button only in preview
+      if (window.location.href.startsWith("file:")) {
+        resetBtn.style.display = "block";
+      }
+
+      updateList();  // Initialize empty list
+    </script>
+  </body>
+</html>
